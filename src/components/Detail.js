@@ -1,44 +1,60 @@
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import db from "../firebase";
 
 function Detail() {
+  const { id } = useParams();
+  const [movie, setMovie] = useState();
+
+  useEffect(() => {
+    //db에서 영화 가지고 오기
+    db.collection("movies")
+      .doc(id)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          setMovie(doc.data());
+        } else {
+          //redirect to homepage
+        }
+      });
+  }, []);
+
   return (
     <Container>
-      <Background>
-        <img src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/4F39B7E16726ECF419DD7C49E011DD95099AA20A962B0B10AA1881A70661CE45/scale?width=1920&aspectRatio=1.78&format=jpeg" />
-      </Background>
-      <ImageTitle>
-        <img src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D7AEE1F05D10FC37C873176AAA26F777FC1B71E7A6563F36C6B1B497CAB1CEC2/scale?width=1344&aspectRatio=1.78" />
-      </ImageTitle>
-      <Controls>
-        <PlayButton>
-          <img src="images/play-icon-black.png" />
-          <span>PLAY</span>
-        </PlayButton>
-        <TrailerButton>
-          <img src="images/play-icon-white.png" />
-          <span>Trailer</span>
-        </TrailerButton>
-        <AddButton>
-          <span>+</span>
-        </AddButton>
-        <GroupWatchButton>
-          <img src="images/group-icon.png" />
-        </GroupWatchButton>
-      </Controls>
-      <SubTitle>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda,
-        quod!
-      </SubTitle>
-      <Description>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel ipsum eius
-        ducimus magnam quaerat nemo itaque labore nam possimus illo suscipit
-        laudantium optio qui odio reprehenderit excepturi repellat facilis
-        fugiat, mollitia recusandae earum harum. Provident deserunt quidem
-        voluptates deleniti in.
-      </Description>
+      {movie && (
+        <>
+          <Background>
+            <img src={movie.backgroundImg} alt="" />
+          </Background>
+          <ImageTitle>
+            <img src={movie.titleImg} alt="" />
+          </ImageTitle>
+          <Controls>
+            <PlayButton>
+              <img src="/images/play-icon-black.png" alt="" />
+              <span>PLAY</span>
+            </PlayButton>
+            <TrailerButton>
+              <img src="/images/play-icon-white.png" alt="" />
+              <span>Trailer</span>
+            </TrailerButton>
+            <AddButton>
+              <span>+</span>
+            </AddButton>
+            <GroupWatchButton>
+              <img src="/images/group-icon.png" alt="" />
+            </GroupWatchButton>
+          </Controls>
+          <SubTitle>{movie.subTitle}</SubTitle>
+          <Description>{movie.description}</Description>
+        </>
+      )}
     </Container>
   );
 }
+
 export default Detail;
 
 const Container = styled.div`
@@ -80,6 +96,7 @@ const ImageTitle = styled.div`
 `;
 
 const Controls = styled.div`
+  margin-top: 60px;
   display: flex;
   align-items: center;
 `;
