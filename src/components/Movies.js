@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { selectMovies } from "../features/movie/movieSlice";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function Movies() {
   const movies = useSelector(selectMovies);
@@ -11,7 +12,10 @@ function Movies() {
         {movies &&
           movies.map((movie) => (
             <Wrap key={movie.id}>
-              <img src={movie.cardImg} alt="" />
+              {/* backtick을 써야함에 주의. 중괄호는 한개만 쓰고 그 왼쪽에 달러 기호 넣고 */}
+              <Link to={`/detail/${movie.id}`}>
+                <img src={movie.cardImg} alt="" />
+              </Link>
             </Wrap>
           ))}
       </Content>
@@ -25,7 +29,7 @@ const Container = styled.div``;
 const Content = styled.div`
   display: grid;
   grid-gap: 25px;
-  grid-template-columns: repeat(4, minmax(0px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 `;
 
 const Wrap = styled.div`

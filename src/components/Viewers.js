@@ -30,7 +30,7 @@ const Container = styled.div`
   grid-gap: 25px;
   padding: 30px 0px 26px;
   /* 아래 더 체크 */
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0px, 1fr));
 `;
 
 const Wrap = styled.div`
